@@ -1,0 +1,24 @@
+# Preserve URLs from the previous khaledelshimy.com where they still have a home.
+Redirect 301 /projects/index.html   /#work
+Redirect 301 /projects/             /#work
+Redirect 301 /experience/index.html /#experience
+Redirect 301 /experience/           /#experience
+Redirect 301 /skills.json           /#expertise
+Redirect 301 "/assets/files/Khaled Elshimy.pdf" /assets/files/Khaled-Elshimy-CV.pdf
+
+ErrorDocument 404 /404.html
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript image/svg+xml application/json
+</IfModule>
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/jpeg        "access plus 1 year"
+  ExpiresByType image/png         "access plus 1 year"
+  ExpiresByType image/svg+xml     "access plus 1 year"
+  ExpiresByType video/webm        "access plus 1 year"
+  ExpiresByType text/css          "access plus 7 days"
+  ExpiresByType text/javascript   "access plus 7 days"
+  ExpiresByType text/html         "access plus 1 hour"
+</IfModule>

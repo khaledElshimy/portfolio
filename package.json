@@ -1,0 +1,14 @@
+{
+  "name": "khaledelshimy-portfolio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Portfolio for Khaled Elshimy — static site generated from data with zero runtime dependencies.",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs --watch --serve",
+    "serve": "node build.mjs --serve",
+    "check": "node build.mjs --check"
+  },
+  "engines": { "node": ">=18" }
+}
