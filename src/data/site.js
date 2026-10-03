@@ -3,8 +3,8 @@ export const site = {
   name: 'Khaled Elshimy',
   initials: 'KE',
   title: 'Engineering Manager',
-  positioning: 'Engineering Manager, Mobile, Web & XR',
-  role: 'Engineering Manager | Mobile, Web & XR Engineering · Agile/XP Team Leadership & Product Delivery',
+  positioning: 'Engineering Manager',
+  role: 'Engineering Manager · Agile/XP Team Leadership & Product Delivery',
   // Kept for reference; deliberately not shown in the intro.
   location: 'Abu Dhabi, UAE',
   headline: 'Thirteen years building software. Seven leading the teams that ship it.',

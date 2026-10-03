@@ -228,7 +228,7 @@ function contactSection() {
   <div class="wrap">
     <div class="contact">
       <div class="reveal">
-        <h2>Looking for an engineering manager<em>?</em></h2>
+        <h2>Looking for an engineering leader<em>?</em></h2>
         <p>I'm open to engineering management roles, and happy to talk about leading a team, delivery, or a project that needs someone to own it.</p>
         <div class="socials">
           ${site.socials.map((s) => `<a class="social" href="${esc(s.href)}" rel="me noopener" target="_blank">${icon(s.icon)}${esc(s.label)}</a>`).join('')}
@@ -245,7 +245,7 @@ function contactSection() {
 
 export function homePage() {
   return layout({
-    title: `${site.name}, ${site.title} | Mobile, Web & XR`,
+    title: `${site.name}, ${site.title}`,
     description: site.description,
     canonical: site.url + '/',
     isHome: true,
