@@ -120,15 +120,39 @@ function waveform() {
 }
 
 function rewards() {
-  let tiles = '';
-  for (let i = 0; i < 3; i++) {
-    const x = 150 + i * 120;
-    const y = 120 + i * 26;
-    tiles += `<rect x="${x}" y="${y}" width="104" height="104" rx="20" fill="#16204a" stroke="#386bff" stroke-opacity=".5"/>
-      <circle cx="${x + 52}" cy="${y + 52}" r="23" fill="none" stroke="#5b86ff" stroke-width="3"/>
-      <circle cx="${x + 52}" cy="${y + 52}" r="8" fill="#386bff"/>`;
-  }
-  return frame(tiles, 'r');
+  // An offerwall as the SDK actually renders it: a WebView inside a phone frame,
+  // with a reward balance, offer rows and a daily-reward strip.
+  let rows = '';
+  const offers = [
+    ['Play 5 minutes', '+120'],
+    ['Reach level 3', '+450'],
+    ['Daily check-in', '+60'],
+    ['Complete tutorial', '+200'],
+  ];
+  offers.forEach(([label, amt], i) => {
+    const y = 150 + i * 46;
+    rows += `<rect x="252" y="${y}" width="136" height="38" rx="7" fill="#101729" stroke="#2b3a63"/>
+      <circle cx="271" cy="${y + 19}" r="9" fill="#1b2a52" stroke="#5b86ff" stroke-width="1.5"/>
+      <rect x="288" y="${y + 11}" width="56" height="6" rx="3" fill="#39467a"/>
+      <rect x="288" y="${y + 21}" width="34" height="5" rx="2.5" fill="#2b3558"/>
+      <rect x="352" y="${y + 13}" width="28" height="13" rx="6.5" fill="#386bff" fill-opacity=".9"/>`;
+  });
+  return frame(
+    `<rect x="238" y="54" width="164" height="300" rx="20" fill="#0a0e1a" stroke="#2b3a63" stroke-width="2"/>
+     <rect x="252" y="72" width="136" height="60" rx="9" fill="#16204a" stroke="#386bff" stroke-opacity=".6"/>
+     <circle cx="276" cy="102" r="13" fill="none" stroke="#5b86ff" stroke-width="2.5"/>
+     <circle cx="276" cy="102" r="4.5" fill="#5b86ff"/>
+     <rect x="298" y="92" width="52" height="8" rx="4" fill="#5b86ff" fill-opacity=".85"/>
+     <rect x="298" y="106" width="34" height="6" rx="3" fill="#39467a"/>
+     ${rows}
+     <text x="440" y="100" fill="#7c8496" font-family="IBM Plex Mono,monospace" font-size="12">WebView</text>
+     <text x="440" y="124" fill="#7c8496" font-family="IBM Plex Mono,monospace" font-size="12">Playtime rewards</text>
+     <text x="440" y="148" fill="#7c8496" font-family="IBM Plex Mono,monospace" font-size="12">Achievements</text>
+     <text x="440" y="172" fill="#7c8496" font-family="IBM Plex Mono,monospace" font-size="12">Daily rewards</text>
+     <text x="440" y="196" fill="#7c8496" font-family="IBM Plex Mono,monospace" font-size="12">Locale management</text>
+     <line x1="428" y1="84" x2="428" y2="204" stroke="#2b3a63"/>`,
+    'r'
+  );
 }
 
 function optimize() {
@@ -189,7 +213,64 @@ function merge() {
   );
 }
 
-const VARIANTS = { waveform, rewards, optimize, connect, network, merge };
+
+function crane() {
+  // Gantry + load schematic — an operator-training control picture.
+  return frame(
+    `<line x1="90" y1="300" x2="90" y2="110" stroke="#386bff" stroke-opacity=".55" stroke-width="4"/>
+     <line x1="550" y1="300" x2="550" y2="110" stroke="#386bff" stroke-opacity=".55" stroke-width="4"/>
+     <line x1="70" y1="110" x2="570" y2="110" stroke="#5b86ff" stroke-width="5"/>
+     <rect x="300" y="96" width="70" height="30" rx="6" fill="#16204a" stroke="#5b86ff" stroke-width="2"/>
+     <line x1="335" y1="126" x2="335" y2="226" stroke="#5b86ff" stroke-width="2" stroke-dasharray="7 6"/>
+     <rect x="291" y="226" width="88" height="62" rx="8" fill="#141a2e" stroke="#386bff" stroke-opacity=".7" stroke-width="2"/>
+     <line x1="60" y1="318" x2="580" y2="318" stroke="#386bff" stroke-opacity=".3" stroke-width="2"/>`,
+    'cr'
+  );
+}
+
+function shield() {
+  // Security-awareness training.
+  return frame(
+    `<path d="M320 108 L420 146 V214 c0 56 -43 94 -100 112 c-57 -18 -100 -56 -100 -112 V146 Z"
+       fill="#141a2e" stroke="#5b86ff" stroke-width="2.5"/>
+     <path d="M284 206 l26 26 l52 -54" fill="none" stroke="#386bff" stroke-width="5"
+       stroke-linecap="round" stroke-linejoin="round"/>`,
+    'sh'
+  );
+}
+
+function payments() {
+  // A game reaching a regional payment network: one integration on the left,
+  // many local payment rails on the right.
+  const rails = ['e-wallet', 'carrier', 'cash', 'card', 'bank', 'voucher'];
+  let tiles = '';
+  rails.forEach((label, i) => {
+    const col = i % 2, row = Math.floor(i / 2);
+    const x = 404 + col * 118, y = 118 + row * 70;
+    tiles += `<rect x="${x}" y="${y}" width="104" height="54" rx="9" fill="#141a2e" stroke="#386bff" stroke-opacity=".5"/>
+      <rect x="${x + 14}" y="${y + 16}" width="34" height="7" rx="3.5" fill="#5b86ff" fill-opacity=".75"/>
+      <rect x="${x + 14}" y="${y + 30}" width="58" height="6" rx="3" fill="#2b3558"/>
+      <text x="${x + 14}" y="${y + 48}" fill="#6b7490" font-family="IBM Plex Mono,monospace" font-size="9">${label}</text>`;
+  });
+  return frame(
+    `<rect x="92" y="150" width="116" height="200" rx="18" fill="#0f1422" stroke="#2b3a63" stroke-width="2"/>
+     <rect x="106" y="168" width="88" height="10" rx="5" fill="#39467a"/>
+     <rect x="106" y="188" width="60" height="7" rx="3.5" fill="#2b3558"/>
+     <rect x="106" y="300" width="88" height="28" rx="8" fill="#386bff" fill-opacity=".9"/>
+     <text x="150" y="318" fill="#eaf0ff" font-family="Inter,sans-serif" font-size="11" text-anchor="middle">Buy</text>
+     <circle cx="312" cy="250" r="40" fill="#16204a" stroke="#5b86ff" stroke-width="2"/>
+     <text x="312" y="246" fill="#9fb6ff" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle">one</text>
+     <text x="312" y="260" fill="#9fb6ff" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle">API</text>
+     <line x1="208" y1="250" x2="272" y2="250" stroke="#386bff" stroke-opacity=".6" stroke-width="2"/>
+     <path d="M352,250 C378,250 378,145 404,145" fill="none" stroke="#386bff" stroke-opacity=".35" stroke-width="1.6"/>
+     <path d="M352,250 C378,250 378,215 404,215" fill="none" stroke="#386bff" stroke-opacity=".35" stroke-width="1.6"/>
+     <path d="M352,250 C378,250 378,285 404,285" fill="none" stroke="#386bff" stroke-opacity=".35" stroke-width="1.6"/>
+     ${tiles}`,
+    'pay'
+  );
+}
+
+const VARIANTS = { waveform, rewards, optimize, connect, network, merge, crane, shield, payments };
 
 export function abstractVisual(variant) {
   const fn = VARIANTS[variant] || connect;

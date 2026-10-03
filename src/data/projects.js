@@ -22,7 +22,7 @@ export const projects = [
     categories: ['sdk'],
     featured: true,
     org: 'Audiomob',
-    role: 'Sr. Unity SDK Engineer',
+    role: 'Senior SDK Engineer',
     period: 'Jul 2022 – Dec 2023',
     summary:
       'A Unity SDK for non-intrusive in-game audio advertising, with the native Android and iOS layers underneath it and the documentation and support that let other studios integrate it.',
@@ -38,9 +38,10 @@ export const projects = [
     tech: ['Unity', 'C#', 'Java', 'Kotlin', 'Swift', 'Objective-C', 'Native plugins', 'API documentation'],
     platforms: ['Android', 'iOS'],
     media: {
-      kind: 'abstract',
-      variant: 'waveform',
-      alt: 'Illustrative graphic representing an audio advertising SDK: a waveform crossing a layered SDK stack.',
+      kind: 'video', poster: '/assets/img/posters/audiomob.jpg',
+      video: '/assets/media/audiomob.webm',
+      alt: 'Frame from the Audiomob product video showing the Unity integration flow.',
+      note: 'Audiomob product video covering the SDK integration flow.',
     },
     links: [{ label: 'Audiomob', href: 'https://www.audiomob.com/', external: true }],
   },
@@ -52,15 +53,15 @@ export const projects = [
     categories: ['sdk'],
     featured: true,
     org: 'TyrAds',
-    role: 'Unity SDK Engineer',
-    period: null,
+    role: 'SDK Engineer, Consultant',
+    period: 'Nov 2024 – Present',
     summary:
-      'A Unity SDK for gamified loyalty and rewards — an offerwall rendered in a WebView, with locale management, native Android and iOS plugins, and a versioned binary package distribution.',
+      'A Unity SDK for gamified loyalty and rewards. An offerwall rendered in a WebView, with locale management, native Android and iOS plugins, and a versioned binary package distribution.',
     challenge:
-      'A rewards offerwall is mostly integration surface: it has to authenticate a user, render remote content inside a Unity game, handle deeplink routes back into the app, resolve native dependencies on both platforms, and localise all of it — while staying simple enough to drop into someone else\'s project.',
+      'A rewards offerwall is mostly integration surface: it has to authenticate a user, render remote content inside a Unity game, handle deeplink routes back into the app, resolve native dependencies on both platforms, and localise all of it, while staying simple enough to drop into someone else\'s project.',
     contribution: [
       'Created the Unity SDK for gamified loyalty programs.',
-      'Built the offerwall integration flow — user login, initialisation and authentication state, and deeplinking routes.',
+      'Built the offerwall integration flow: user login, initialisation and authentication state, and deeplinking routes.',
       'Implemented locale management so the offerwall presents in the player\'s language.',
       'Built the native Android and iOS plugin layers, including notification modules.',
       'Set up the packaging path: SemVer-versioned UPM package distributed as a compiled binary, with an SDK initialisation wizard for consumers.',
@@ -70,9 +71,10 @@ export const projects = [
     tech: ['Unity 2021.3+', 'C#', 'Android native', 'iOS native', 'WebView', 'External Dependency Manager', 'SemVer / UPM'],
     platforms: ['Android', 'iOS'],
     media: {
-      kind: 'abstract',
-      variant: 'rewards',
-      alt: 'Illustrative graphic representing a rewards offerwall SDK: stacked reward tiles over an integration flow.',
+      kind: 'still',
+      poster: '/assets/img/posters/tyrads.png',
+      alt: 'TyrAds SDK Premium Widget artwork: achievement medals, the T-Points token and a diamond.',
+      note: 'UI artwork shipped in the TyrAds Unity SDK package.',
     },
     links: [{ label: 'SDK documentation', href: 'https://sdk-doc.tyrads.com', external: true }],
   },
@@ -84,12 +86,12 @@ export const projects = [
     categories: ['sdk', 'games-xr'],
     featured: true,
     org: 'Avrioc Technologies',
-    role: 'Sr. Unreal Game Developer',
+    role: 'Lead Software Tools Engineer',
     period: 'Dec 2020 – Jul 2022',
     summary:
       'An indoor cycling platform built in Unreal, where real smart bikes drive the game. The connection between the hardware and the simulation is a native BLE plugin.',
     challenge:
-      'A smart trainer speaks Bluetooth Low Energy, not Unreal. Getting live resistance and cadence data out of physical hardware, into a running simulation, and onto a readable UI — across Windows, iOS and Android — is a native integration problem before it is a gameplay one.',
+      'A smart trainer speaks Bluetooth Low Energy, not Unreal. Getting live resistance and cadence data out of physical hardware, into a running simulation, and onto a readable UI across Windows, iOS and Android, is a native integration problem before it is a gameplay one.',
     contribution: [
       'Created Unreal plugins for BLE smart bike connectivity.',
       'Visualised trainer data coming off the hardware.',
@@ -118,10 +120,10 @@ export const projects = [
     categories: ['games-xr'],
     featured: true,
     org: 'LanaGames',
-    role: 'Lead Game Developer',
+    role: 'Lead Software Engineer',
     period: 'Nov 2019 – Dec 2020',
     summary:
-      'Bringing a released console title to Google Stadia — performance optimization, shader fixes and deployment to a streaming platform.',
+      'Bringing a released console title to Google Stadia. Performance optimization, shader fixes and deployment to a streaming platform.',
     challenge:
       'Porting to Stadia means targeting a streaming runtime with its own performance envelope. Shaders that worked elsewhere break or cost too much, and the work is mostly measurement, optimization and platform compliance rather than new features.',
     contribution: [
@@ -135,9 +137,10 @@ export const projects = [
     tech: ['Unity', 'Shaders', 'Performance optimization', 'Console deployment'],
     platforms: ['Stadia'],
     media: {
-      kind: 'abstract',
-      variant: 'optimize',
-      alt: 'Illustrative graphic representing platform porting and optimization: a frame-time graph settling into budget.',
+      kind: 'still',
+      poster: '/assets/img/posters/destroy-all-humans.jpg',
+      alt: 'Key art for Destroy All Humans!, showing the alien Crypto in a burning 1950s street.',
+      note: 'Key art © THQ Nordic. Shown to identify the title; the port work is mine.',
     },
     links: [
       { label: 'StadiaSource', href: 'https://stadiasource.com/game/35/Destroy-All-Humans', external: true },
@@ -152,7 +155,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: true,
     org: 'Shababeek Labs',
-    role: 'Lead Game Developer',
+    role: 'Engineering Manager',
     period: 'Feb 2024 – Present',
     summary:
       'A VR training simulation for police officers, using AI-driven scenarios to rehearse decision-making and procedure in an immersive environment.',
@@ -185,12 +188,12 @@ export const projects = [
     categories: ['products'],
     featured: true,
     org: 'Independent',
-    role: 'Founder & sole developer',
+    role: 'Founder, product & engineering',
     period: 'Independent product',
     summary:
       'An iOS app that turns a spoken voice note into a clean transcript, a summary with key points, and a ready-to-do task list. Designed, built and shipped independently.',
     challenge:
-      'A voice memo is easy to record and hard to use. Turning a rambling recording into something actionable means transcription, summarisation and task extraction have to work well enough that the result is worth opening — and it has to be a product someone can actually ship and support alone.',
+      'A voice memo is easy to record and hard to use. Turning a rambling recording into something actionable means transcription, summarisation and task extraction have to work well enough that the result is worth opening, and it has to be a product someone can actually ship and support alone.',
     contribution: [
       'Designed, built and shipped the app end to end as an independent product.',
       'Built the capture-to-action pipeline: recording, transcript, summary with key points, and an action item list.',
@@ -206,14 +209,14 @@ export const projects = [
       icon: '/assets/img/actionnote-icon.png',
       card: '/assets/img/posters/actionnote.png',
       screens: [
-        { src: '/assets/img/screens/device_record.png', alt: 'ActionNote recording screen with the microphone active.' },
-        { src: '/assets/img/screens/device_summary.png', alt: 'ActionNote summary screen showing a title and key points.' },
-        { src: '/assets/img/screens/device_tasks.png', alt: 'ActionNote tasks screen showing extracted action items.' },
-        { src: '/assets/img/screens/device_ask.png', alt: 'ActionNote Ask Your Notes screen answering a question.' },
-        { src: '/assets/img/screens/device_home.png', alt: 'ActionNote home screen listing captured notes.' },
-        { src: '/assets/img/screens/device_multilanguage.png', alt: 'ActionNote language selection screen.' },
+        { src: '/assets/img/screens/an-record.png', alt: 'ActionNote recording screen.' },
+        { src: '/assets/img/screens/an-note.png', alt: 'A processed note with suggested actions and a transcript.' },
+        { src: '/assets/img/screens/an-actions.png', alt: 'The actions list.' },
+        { src: '/assets/img/screens/an-ask.png', alt: 'Asking a question across a captured meeting.' },
+        { src: '/assets/img/screens/an-brief.png', alt: 'The daily brief screen.' },
+        { src: '/assets/img/screens/an-insights.png', alt: 'The insights overview screen.' },
       ],
-      alt: 'ActionNote app screenshots.',
+      alt: 'ActionNote app screenshots, version 1.4.',
     },
     links: [
       { label: 'App Store', href: 'https://apps.apple.com/us/app/actionnote-voice-to-tasks/id6789915282', external: true },
@@ -224,25 +227,27 @@ export const projects = [
   {
     slug: 'tamatem-connect-plus',
     name: 'Tamatem Connect Plus SDK',
-    tagline: 'SDK integration streamlining',
+    tagline: 'Connecting players to Tamatem Plus',
     categories: ['sdk'],
     featured: false,
     org: 'Tamatem',
-    role: 'SDK Engineer',
+    role: 'SDK integration',
     period: null,
-    summary: 'Work on the Tamatem Connect Plus SDK, streamlining how it integrates across games.',
-    challenge: null,
-    contribution: ['Streamlined the SDK to enhance integration across games.'],
+    summary:
+      'The SDK a game embeds to connect its players to Tamatem Plus, Tamatem\u2019s direct-to-consumer webstore and payment network for the MENA market.',
+    challenge:
+      'Tamatem Plus carries 40+ localized payment methods, from e-wallets and carrier billing to cash and cards, because a large share of the region is underbanked and the standard store payment flow never reaches those players. Behind one integration sits a lot of other people\u2019s APIs, and none of it should surface in the game.',
+    contribution: ['Improved the SDK to make integration easier for game developers.'],
     context:
-      'The résumé records this as SDK integration work. No further verified detail is available, so nothing more is claimed here.',
-    tech: ['SDK integration'],
-    platforms: [],
+      'The r\u00e9sum\u00e9 records this as SDK integration work. That single line is the extent of what is verified about the contribution, so nothing further is claimed. Tamatem is a MENA mobile games publisher; Tamatem Plus is its payments and distribution platform.',
+    tech: ['SDK integration', 'Payments'],
+    platforms: ['Mobile'],
     media: {
       kind: 'abstract',
-      variant: 'connect',
-      alt: 'Illustrative graphic representing SDK integration across multiple games.',
+      variant: 'payments',
+      alt: 'Illustration of a game reaching many local payment methods through a single integration.',
     },
-    links: [],
+    links: [{ label: 'Tamatem', href: 'https://tamatem.co', external: true }],
     sparse: true,
   },
 
@@ -253,7 +258,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'Double Jump',
-    role: 'Sr. Unity Game Developer',
+    role: 'Lead Software Engineer',
     period: 'Mar 2022 – Nov 2022',
     summary:
       'A Web3 platformer with real-time multiplayer, in-game chat, wallet integration and a Kubernetes-backed service layer.',
@@ -268,9 +273,10 @@ export const projects = [
     tech: ['Unity', 'C#', 'Multiplayer', 'Kubernetes', 'GCP', 'Solana', 'Web3'],
     platforms: ['Web'],
     media: {
-      kind: 'abstract',
-      variant: 'network',
-      alt: 'Illustrative graphic representing multiplayer networking and wallet integration.',
+      kind: 'still',
+      poster: '/assets/img/posters/double-jump.jpg',
+      alt: 'Double Jump gameplay with several players in a level, the in-game chat prompt visible.',
+      note: 'Gameplay capture.',
     },
     links: [
       { label: 'doublejump.wtf', href: 'https://www.doublejump.wtf/', external: true },
@@ -315,7 +321,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'El3ab.com',
-    role: 'Senior Game Developer',
+    role: 'Senior Software Engineer',
     period: 'Jul 2015 – Jul 2017',
     summary: 'A trick-taking card game with computer opponents, shipped to web and mobile.',
     challenge: null,
@@ -333,7 +339,6 @@ export const projects = [
       alt: 'Gameplay capture from Estimation Kings showing the card table.',
     },
     links: [
-      { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.el3ab.Estimation&hl=en', external: true },
       { label: 'Video', href: 'https://www.youtube.com/watch?v=L6QT_mJcLpc&list=PLhL1kfc3B9HxIYEsL6sOfxnPnIO8sMQVj&index=4', external: true },
     ],
   },
@@ -345,7 +350,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'Shababeek Labs',
-    role: 'Lead Game Developer',
+    role: 'Engineering Manager',
     period: 'Feb 2024 – Present',
     summary: 'A VR car show experience presenting vehicle models in an interactive environment.',
     challenge: null,
@@ -370,7 +375,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'Shababeek Labs',
-    role: 'Lead Game Developer',
+    role: 'Engineering Manager',
     period: 'Feb 2024 – Present',
     summary:
       'A VR simulation of an office environment, built for training and onboarding with interactive, realistic scenarios.',
@@ -399,7 +404,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'Bookmark-Corp',
-    role: 'Game Developer',
+    role: 'Software Engineer',
     period: 'Jul 2012 – Sep 2014',
     summary: 'A mobile arcade game, built from architecture through characters and UI, shipped to iOS and Android.',
     challenge: null,
@@ -412,17 +417,16 @@ export const projects = [
       video: '/assets/media/bombaboo.webm',
       alt: 'Gameplay capture from BombaBoo.',
     },
-    links: [{ label: 'APKPure', href: 'https://apkpure.com/bomba-boo/com.ITI.BombaBoo', external: true }],
   },
 
   {
     slug: 'sebar',
     name: 'Sebar',
-    tagline: 'Legacy board game — AI & multiplayer',
+    tagline: 'Legacy board game with AI and multiplayer',
     categories: ['games-xr'],
     featured: false,
     org: 'El3ab.com',
-    role: 'Senior Game Developer',
+    role: 'Senior Software Engineer',
     period: 'Jul 2015 – Jul 2017',
     summary: 'A digital version of a traditional board game with computer opponents and online multiplayer.',
     challenge: null,
@@ -436,7 +440,6 @@ export const projects = [
       alt: 'Gameplay capture from Sebar showing the board.',
     },
     links: [
-      { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.bluecrunch.sebargame', external: true },
       { label: 'Video', href: 'https://www.youtube.com/watch?v=k6e9FNxo6A0&list=PLhL1kfc3B9HxIYEsL6sOfxnPnIO8sMQVj&index=15', external: true },
     ],
   },
@@ -460,9 +463,7 @@ export const projects = [
       poster: '/assets/img/posters/world-cup-album.jpg',
       alt: 'Promotional still from World Cup Album showing the collection game on a phone.',
     },
-    links: [
-      { label: 'Google Play', href: 'https://play.google.com/store/apps/details?id=com.yallakora.wca.game', external: true },
-    ],
+    links: [],
   },
 
   {
@@ -472,7 +473,7 @@ export const projects = [
     categories: ['games-xr'],
     featured: false,
     org: 'Bookmark-Corp',
-    role: 'Game Developer',
+    role: 'Software Engineer',
     period: 'Jul 2012 – Sep 2014',
     summary: 'Game elements and multiplayer online experiences for a character-customisation title.',
     challenge: null,
@@ -484,9 +485,7 @@ export const projects = [
       poster: '/assets/img/posters/pimp-my-alien.jpg',
       alt: 'Still from PimpMyAlien.',
     },
-    links: [
-      { label: 'APKPure', href: 'https://apkpure.com/pimp-my-alien/air.com.BookmarkCorp.pimpMyAlien', external: true },
-    ],
+    links: [],
   },
 
   {
@@ -505,9 +504,10 @@ export const projects = [
     tech: ['Unity', 'C#'],
     platforms: ['Mobile'],
     media: {
-      kind: 'abstract',
-      variant: 'merge',
-      alt: 'Illustrative graphic representing a merge strategy game.',
+      kind: 'still',
+      poster: '/assets/img/posters/city-guardians.jpg',
+      alt: 'City Guardians gameplay showing merged vehicles defending against a wave of enemies.',
+      note: 'Gameplay capture.',
     },
     links: [
       { label: 'Video', href: 'https://www.youtube.com/watch?v=HkxVSb9V02Q&list=PLhL1kfc3B9HxIYEsL6sOfxnPnIO8sMQVj&index=16', external: true },

@@ -15,11 +15,11 @@ function header(isHome) {
   return `
 <header class="header">
   <div class="wrap header-inner">
-    <a class="logo" href="/" aria-label="${esc(site.name)} — home">${esc(site.initials)}<span class="dot">.</span></a>
+    <a class="logo" href="/" aria-label="${esc(site.name)}, home">${esc(site.initials)}<span class="dot">.</span></a>
     <nav class="nav" aria-label="Primary">
       <ul>${site.nav.map((n) => `<li><a href="${href(n.href)}">${esc(n.label)}</a></li>`).join('')}</ul>
     </nav>
-    <p class="tagline-mark">Build<br>Brighter<br>Experiences.</p>
+    ${site.openToRoles ? '<span class="open-pill">Open to roles</span>' : ''}
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><span></span></button>
   </div>
 </header>
@@ -41,7 +41,6 @@ function footer() {
       <span class="footer-meta">${esc(site.title)}</span>
     </div>
     <div class="footer-right">
-      <p class="footer-motto">Different experiences.<br>A brighter tomorrow.</p>
       <div class="footer-socials">
         ${site.socials
           .map(

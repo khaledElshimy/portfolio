@@ -60,7 +60,7 @@ function stage(p) {
   return `
 <div class="proj-stage reveal">
   <div class="abstract abstract-stage" role="img" aria-label="${esc(m.alt)}">${abstractVisual(m.variant)}</div>
-  <p class="media-note">Illustrative graphic — not a screenshot. This project has no public capture.</p>
+  <p class="media-note">Illustrative graphic. Not a screenshot, and this project has no public capture.</p>
 </div>`;
 }
 
@@ -136,11 +136,11 @@ export function projectPage(p) {
           : ''
       }
       ${
-        p.links.length
+        (p.links || []).length
           ? `<div class="aside-card reveal">
                <h3>Links</h3>
                <div class="aside-links">
-                 ${p.links
+                 ${(p.links || [])
                    .map(
                      (l) =>
                        `<a href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ${icon('arrowUpRight')}</a>`
@@ -170,7 +170,7 @@ export function projectPage(p) {
 </div>`;
 
   return layout({
-    title: `${p.name} — ${p.tagline} | ${site.name}`,
+    title: `${p.name}, ${p.tagline} | ${site.name}`,
     description: p.summary,
     canonical: `${site.url}/work/${p.slug}/`,
     isHome: false,
@@ -180,7 +180,7 @@ export function projectPage(p) {
 
 export function notFoundPage() {
   return layout({
-    title: `Page not found — ${site.name}`,
+    title: `Page not found | ${site.name}`,
     description: 'That page does not exist.',
     isHome: false,
     body: `

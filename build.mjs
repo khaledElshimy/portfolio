@@ -130,7 +130,6 @@ async function build() {
   let staticBytes = 0;
   for (const rel of await walk(STATIC)) {
     if (NO_VIDEO && rel.startsWith('assets/media')) continue;
-    if (rel === 'assets/media/aub.webm') continue; // not used by any project
     const from = path.join(STATIC, rel);
     const to = path.join(DIST, rel);
     await mkdir(path.dirname(to), { recursive: true });

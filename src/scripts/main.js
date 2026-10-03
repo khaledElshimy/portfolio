@@ -125,40 +125,22 @@
 
   /* --------------------------------------------------------------- filters */
   var filterBar = document.querySelector('[data-filters]');
-  var grid = document.querySelector('[data-cards]');
+  var list = document.querySelector('[data-stories]');
 
-  if (filterBar && grid) {
-    var cards = Array.prototype.slice.call(grid.querySelectorAll('[data-categories]'));
+  if (filterBar && list) {
+    var items = Array.prototype.slice.call(list.querySelectorAll('[data-cats]'));
     var countEl = document.querySelector('[data-count]');
-    var emptyEl = document.querySelector('[data-empty]');
-    var moreBtn = document.querySelector('[data-more]');
-    var expanded = false;
-
-    var FEATURED = 6;
-
-    var visibleFor = function (cat) {
-      return cards.filter(function (c) {
-        return cat === 'all' || c.getAttribute('data-categories').split(' ').indexOf(cat) > -1;
-      });
-    };
+    var current = 'all';
 
     var render = function (cat) {
-      var matching = visibleFor(cat);
-      // When collapsed on "all", show only the featured six.
-      var shown = (!expanded && cat === 'all') ? matching.slice(0, FEATURED) : matching;
-
-      cards.forEach(function (c) { c.hidden = shown.indexOf(c) === -1; });
-
+      var shown = 0;
+      items.forEach(function (el) {
+        var match = cat === 'all' || el.getAttribute('data-cats').split(' ').indexOf(cat) > -1;
+        el.hidden = !match;
+        if (match) shown++;
+      });
       if (countEl) {
-        countEl.textContent = shown.length + ' of ' + cards.length + ' projects';
-      }
-      if (emptyEl) emptyEl.hidden = shown.length > 0;
-      if (moreBtn) {
-        // The control is only meaningful while "all" is collapsed or expanded.
-        var relevant = cat === 'all' && matching.length > FEATURED;
-        moreBtn.hidden = !relevant;
-        moreBtn.textContent = expanded ? 'Show fewer projects' : 'View all projects';
-        moreBtn.setAttribute('aria-expanded', String(expanded));
+        countEl.textContent = shown + ' of ' + items.length + ' shown';
       }
     };
 
@@ -168,43 +150,18 @@
       });
     };
 
-    var current = 'all';
-
-    var transitionTo = function (cat) {
-      current = cat;
-      setActive(cat);
-      if (prefersReduced()) { render(cat); return; }
-      // Fade the grid out and back in so results do not snap.
-      grid.style.transition = 'opacity 150ms ease';
-      grid.style.opacity = '0';
-      window.setTimeout(function () {
-        render(cat);
-        grid.style.opacity = '1';
-      }, 150);
-    };
-
     filterBar.addEventListener('click', function (e) {
       var btn = e.target.closest('.filter');
       if (!btn) return;
       var cat = btn.getAttribute('data-filter');
       if (cat === current) return;
-      if (cat !== 'all') expanded = true; // category views always show everything
-      else expanded = false;
-      transitionTo(cat);
+      current = cat;
+      setActive(cat);
+      if (prefersReduced()) { render(cat); return; }
+      list.style.transition = 'opacity 140ms ease';
+      list.style.opacity = '0';
+      window.setTimeout(function () { render(cat); list.style.opacity = '1'; }, 140);
     });
-
-    if (moreBtn) {
-      moreBtn.addEventListener('click', function () {
-        expanded = !expanded;
-        transitionTo(current);
-        if (expanded) {
-          // Move focus to the first newly revealed card for keyboard users.
-          var revealed = visibleFor(current)[FEATURED];
-          var link = revealed && revealed.querySelector('a');
-          if (link) link.focus({ preventScroll: true });
-        }
-      });
-    }
 
     render('all');
     setActive('all');
@@ -226,6 +183,22 @@
     }, { rootMargin: '-45% 0px -50% 0px' });
     sections.forEach(function (s) { navObserver.observe(s); });
   }
+
+  /* ------------------------------------------------------- youtube facade */
+  // Swap the poster for the real embed only on click. Nothing reaches YouTube
+  // before that, so the page makes no third-party request on load.
+  document.querySelectorAll('[data-yt]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var id = btn.getAttribute('data-yt');
+      var frame = document.createElement('iframe');
+      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1&rel=0';
+      frame.title = 'Trailer';
+      frame.allow = 'accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture';
+      frame.allowFullscreen = true;
+      frame.setAttribute('style', 'width:100%;aspect-ratio:16/9;border:0;display:block');
+      btn.parentNode.replaceChild(frame, btn);
+    });
+  });
 
   /* --------------------------------------------------- click-to-play video */
   document.querySelectorAll('[data-play]').forEach(function (btn) {

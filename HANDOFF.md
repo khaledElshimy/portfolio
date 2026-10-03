@@ -35,6 +35,60 @@ site, or the public TyrAds SDK README. Specifically:
   Android + iOS, Unity 2021.3+, External Dependency Manager). No SDK source,
   credentials or client data is exposed.
 
+
+
+## Résumé alignment (Engineering Manager CV is the source of truth)
+
+- **The downloadable PDF was wrong and is now replaced.** The site had been
+  serving the old 2024 game-developer CV (`Tech Lead and Senior Game Developer`)
+  while every page said Engineering Manager. `assets/files/Khaled-Elshimy-CV.pdf`
+  is now the Engineering Manager résumé, byte-identical to the source file.
+- **The "ITI instruction" claim is gone.** `src/data/expertise.js` was dead code
+  that still carried it; the résumé lists ITI only under Education, so the file
+  was deleted rather than left to be reintroduced.
+- **"Mobile & tech" added** — the résumé lists five core strengths and the site
+  was showing four.
+- **Game title follows the résumé**: *Good Morning, {Employee Name}*. Note the
+  Steam store page publishes it as *Good Morning [Employee Name] VR* (square
+  brackets, with "VR"). Worth making those agree in one direction or the other.
+
+Swept and verified against the résumé: all 8 company/title pairs, all employment
+dates, contact details, and the absence of any Product Manager, Delivery Manager,
+Business Development or Co-Founder claim.
+
+### Confirmed by Khaled (not in the résumé)
+
+Police Assistant AI, Car Show VR and The Office VR are **Shababeek Labs work** —
+confirmed directly, and described as quick projects rather than long engagements.
+They are attributed to Shababeek under the Engineering Manager role and carry a
+"Quick project" badge so a short turnaround does not read like a six-month
+engagement.
+
+Police Assistant AI was demoted from a full four-beat story to a compact entry
+for the same reason: the decision narrative overstated a fast piece of work. It
+keeps its real video.
+
+The résumé names only the port crane demo and university client work under
+Shababeek, so these three rest on Khaled's confirmation rather than the CV.
+
+## Resolved since the first draft
+
+- **`aub.webm` identified.** It is an **Audiomob product video** (Unity integration
+  flow, "Add the Prefab", "Publisher API", Audiomob branding), not an unknown
+  project. Re-encoded 35 MB → 4.4 MB and attached to the Audiomob story, which
+  previously had no asset at all.
+- **Good Morning [Employee Name] VR now has media.** The official trailer
+  (youtu.be/XbuA5T2_0HE) plays behind its real thumbnail, and the Steam store
+  page is linked. Note the published title uses square brackets —
+  *Good Morning [Employee Name] VR* — not the curly braces used in the résumé.
+- **Steam facts verified from the store page**: Shababeek Labs is both developer
+  and publisher; Q4 2026; Meta Quest 2/3/3S/Pro, Valve Index, HTC Vive, Oculus
+  Rift and Windows Mixed Reality; a seated VR mystery over twelve in-game days,
+  2–6 hours, three endings.
+- **The trailer costs nothing on load.** It uses a facade: the page embeds no
+  YouTube iframe until the viewer presses play, and then uses youtube-nocookie.com.
+  Verified — 0 YouTube iframes before click, 1 after.
+
 ## Things you should check or fill in
 
 These are real gaps. Nothing was invented to cover them.

@@ -1,126 +1,176 @@
 import { site, categories } from '../data/site.js';
-import { projects } from '../data/projects.js';
-import { expertise } from '../data/expertise.js';
-import { experience, beyond, education } from '../data/experience.js';
+import { stories } from '../data/stories.js';
+import { experience, productWork, education, strengths } from '../data/experience.js';
 import { icon } from './icons.mjs';
-import { torusKnot, abstractVisual } from './art.mjs';
 import { layout, esc } from './layout.mjs';
+import { abstractVisual } from './art.mjs';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const STACK_ICONS = { Unity: 'unity', 'Unreal Engine': 'unreal', 'Native SDKs': 'code', Mobile: 'mobile', XR: 'xr' };
+const STATIC = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..', 'static');
+// If a video file has been removed, fall back to its poster instead of
+// shipping a player that cannot load anything.
+const videoPresent = (url) => existsSync(path.join(STATIC, url.replace(/^\//, '')));
+import { projects } from '../data/projects.js';
 
-function cardMedia(p) {
-  const m = p.media;
-  if (m.kind === 'video' || m.kind === 'still') {
-    return `<img src="${esc(m.poster)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="675">`;
+const hasArchivePage = (slug) => projects.some((p) => p.slug === slug);
+
+/* --------------------------------------------------------------- the media */
+function storyMedia(s) {
+  const m = s.media;
+  const id = `v-${s.slug}`;
+
+  if (m.kind === 'video' && !videoPresent(m.video)) {
+    return `
+<div class="shot">
+  <img src="${esc(m.poster)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="750">
+  <p class="cap">${esc(m.note || 'Still from the project.')}</p>
+</div>`;
   }
+
+  if (m.kind === 'video') {
+    return `
+<div class="shot">
+  <button class="vbtn" type="button" data-play="${id}" aria-label="Play video for ${esc(s.project)}">
+    <img src="${esc(m.poster)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="750">
+    <span class="vplay" aria-hidden="true">${icon('play')}</span>
+  </button>
+  <video id="${id}" hidden preload="none" playsinline poster="${esc(m.poster)}">
+    <source src="${esc(m.video)}" type="video/webm">
+    <a href="${esc(m.video)}">Download the video</a>
+  </video>
+  <p class="cap">${esc(m.note || 'Capture from the project.')}</p>
+</div>`;
+  }
+
+  // A YouTube facade: nothing is requested from YouTube until the viewer
+  // presses play, so the page costs no third-party request on load.
+  if (m.kind === 'trailer') {
+    return `
+<div class="shot">
+  <button class="vbtn" type="button" data-yt="${esc(m.youtube)}" aria-label="Play the trailer for ${esc(s.project)}">
+    <img src="${esc(m.poster)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1280" height="720">
+    <span class="vplay" aria-hidden="true">${icon('play')}</span>
+  </button>
+  <p class="cap">${esc(m.note)}</p>
+</div>`;
+  }
+
+  if (m.kind === 'still') {
+    return `
+<div class="shot">
+  <img src="${esc(m.poster)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="675">
+  <p class="cap">${esc(m.note || 'Still from the project.')}</p>
+</div>`;
+  }
+
   if (m.kind === 'screens') {
-    return `<img src="${esc(m.card || m.screens[1].src)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="675">`;
+    return `
+<div class="shot">
+  <img src="${esc(m.card)}" alt="${esc(m.alt)}" loading="lazy" decoding="async" width="1200" height="675">
+  <div class="screens4">
+    ${m.screens.map((x) => `<img src="${esc(x.src)}" alt="${esc(x.alt)}" loading="lazy" decoding="async" width="390" height="844">`).join('')}
+  </div>
+  <p class="cap">Screenshots from the shipped app.</p>
+</div>`;
   }
-  return `<div class="abstract" role="img" aria-label="${esc(m.alt)}">${abstractVisual(m.variant)}</div>`;
+
+  // Generated graphic. Always labelled so it cannot be read as a screenshot.
+  return `
+<div class="shot">
+  <div class="abstract" role="img" aria-label="${esc(m.alt)}">${abstractVisual(m.variant)}</div>
+  <p class="cap">${esc(m.note)}</p>
+</div>`;
 }
 
-function card(p) {
-  const illustrative = p.media.kind === 'abstract';
+const tagList = (s) => (s.tags && s.tags.length ? `<ul class="tags">${s.tags.map((t) => `<li class="chip">${esc(t)}</li>`).join('')}</ul>` : '');
+
+const linkList = (s) => {
+  const out = (s.links || []).map(
+    (l) => `<a class="slink" href="${esc(l.href)}" target="_blank" rel="noopener">${esc(l.label)} ${icon('arrowUpRight')}</a>`
+  );
+  if (hasArchivePage(s.slug)) {
+    out.unshift(`<a class="slink" href="/work/${esc(s.slug)}/">Full project page ${icon('arrowRight')}</a>`);
+  }
+  return out.length ? `<div class="slinks">${out.join('')}</div>` : '';
+};
+
+function storyHead(s) {
   return `
-<article class="card reveal" data-categories="${esc(p.categories.join(' '))}">
-  <div class="card-media">
-    ${cardMedia(p)}
-    <div class="card-overlay">
-      <h3><a class="card-link" href="/work/${esc(p.slug)}/">${esc(p.name)}</a></h3>
-      <p>${esc(p.tagline)}</p>
+<div class="sh">
+  <span class="num">${esc(s.n)}</span>
+  <h3>${esc(s.title)}</h3>
+  ${s.team ? `<span class="team">${esc(s.team)} engineers</span>` : ''}
+  ${s.scale === 'quick' ? '<span class="scale">Quick project</span>' : ''}
+  <span class="where">${[s.org, s.period].filter(Boolean).map(esc).join(' · ')}</span>
+</div>`;
+}
+
+function fullStory(s) {
+  return `
+<article class="story reveal" data-cats="${esc(s.cats.join(' '))}">
+  ${storyHead(s)}
+  <div class="sgrid">
+    <div>
+      <div class="beat"><span class="t">${esc((s.labels && s.labels.situation) || 'Context')}</span><p>${esc(s.situation)}</p></div>
+      <div class="beat"><span class="t">${esc((s.labels && s.labels.decision) || 'What I owned')}</span><p>${esc(s.decision)}</p></div>
+      <div class="beat"><span class="t">${esc((s.labels && s.labels.cost) || 'Approach')}</span><p>${esc(s.cost)}</p></div>
+      ${tagList(s)}
+      ${linkList(s)}
     </div>
-    ${illustrative ? '<span class="card-tag">Illustrative visual</span>' : ''}
-    <span class="card-arrow" aria-hidden="true">${icon('arrowRight')}</span>
-  </div>
-  <div class="card-body">
-    <p class="card-role"><b>${esc(p.role)}</b>${p.org ? ` · ${esc(p.org)}` : ''}</p>
-    <ul class="card-tech">${p.tech.slice(0, 4).map((t) => `<li class="chip">${esc(t)}</li>`).join('')}</ul>
+    <div>
+      ${storyMedia(s)}
+      <div class="out"><span class="t">Outcome</span><p>${esc(s.outcome)}</p></div>
+    </div>
   </div>
 </article>`;
 }
 
-function heroSection() {
+function briefStory(s) {
   return `
-<section class="hero" aria-labelledby="hero-title">
-  <div class="wrap">
-    <div class="hero-grid">
-      <div class="hero-copy">
-        <p class="hero-name reveal">${esc(site.name)}</p>
-        <h1 id="hero-title" class="reveal">
-          ${site.headline
-            .map((l, i) => `<span class="line">${esc(l.replace(/\.$/, ''))}<span class="dot">.</span></span>`)
-            .join('')}
-        </h1>
-        <p class="hero-role reveal">${esc(site.positioning)}</p>
-        <p class="hero-sub reveal">${esc(site.supporting)}</p>
-        <div class="hero-actions reveal">
-          <a class="btn btn-primary" href="#work">Explore my work ${icon('arrowRight')}</a>
-          <a class="btn btn-ghost" href="#contact">Let's talk</a>
-        </div>
-      </div>
-      <div class="hero-art" data-paused="false">
-        ${torusKnot()}
-        <p class="hero-art-note">Real<br>ideas<br>bolder<br>worlds</p>
-      </div>
+<article class="story brief reveal" data-cats="${esc(s.cats.join(' '))}">
+  ${storyHead(s)}
+  <div class="sgrid">
+    <div>
+      <p>${esc(s.body)}</p>
+      ${tagList(s)}
+      ${linkList(s)}
     </div>
+    <div>${storyMedia(s)}</div>
   </div>
-  <div class="stack">
-    <div class="wrap">
-      <ul>
-        ${site.stack.map((s) => `<li>${icon(STACK_ICONS[s] || 'code')}<span>${esc(s)}</span></li>`).join('')}
-      </ul>
+</article>`;
+}
+
+/* -------------------------------------------------------------- the page */
+function intro() {
+  return `
+<section class="intro">
+  <div class="wrap">
+    <p class="k reveal">${esc(site.positioning)}</p>
+    <h1 class="reveal">${esc(site.headline)}</h1>
+    <p class="sub reveal">${esc(site.supporting)}</p>
+    <div class="stats">
+      ${site.stats.map((s) => `<div class="stat reveal"><b>${esc(s.n)}</b><span>${esc(s.k)}</span></div>`).join('')}
     </div>
   </div>
 </section>`;
 }
 
-function workSection() {
+function storiesSection() {
   return `
-<section class="section" id="work" aria-labelledby="work-title">
+<section class="sec" id="stories" aria-labelledby="stories-title">
   <div class="wrap">
-    <div class="work-head">
-      <h2 id="work-title" class="reveal">Selected work</h2>
-      <div class="filters" data-filters role="group" aria-label="Filter projects by category">
-        ${categories
-          .map(
-            (c) =>
-              `<button class="filter" type="button" data-filter="${esc(c.id)}" aria-pressed="${c.id === 'all'}">${esc(c.label)}</button>`
-          )
-          .join('')}
+    <div class="sec-head">
+      <h2 id="stories-title" class="reveal">The work</h2>
+      <div class="filters" data-filters role="group" aria-label="Filter by category">
+        ${categories.map((c) => `<button class="filter" type="button" data-filter="${esc(c.id)}" aria-pressed="${c.id === 'all'}">${esc(c.label)}</button>`).join('')}
       </div>
     </div>
-    <div class="cards" data-cards>${projects.map(card).join('')}</div>
-    <p class="no-results" data-empty hidden>No projects in this category.</p>
-    <div class="work-foot">
-      <button class="btn btn-ghost" type="button" data-more aria-expanded="false">View all projects</button>
-      <span class="work-count" data-count aria-live="polite"></span>
+    <div data-stories>
+      ${stories.map((s) => (s.depth === 'full' ? fullStory(s) : briefStory(s))).join('')}
     </div>
-    <p class="work-note">Cards marked “Illustrative visual” use generated graphics, not screenshots — the SDK work is under NDA-style client ownership and has no public capture.</p>
-  </div>
-</section>`;
-}
-
-function expertiseSection() {
-  return `
-<hr class="rule">
-<section class="section" id="expertise" aria-labelledby="expertise-title">
-  <div class="wrap">
-    <div class="section-head">
-      <h2 id="expertise-title" class="reveal">Engineering, with a wider perspective<span class="dot">.</span></h2>
-    </div>
-    <div class="exp-grid">
-      ${expertise
-        .map(
-          (e) => `
-      <div class="exp-item reveal">
-        <div class="exp-icon">${icon(e.icon)}</div>
-        <h3>${esc(e.title)}</h3>
-        <p>${esc(e.body)}</p>
-        <ul>${e.items.map((i) => `<li class="chip">${esc(i)}</li>`).join('')}</ul>
-      </div>`
-        )
-        .join('')}
-    </div>
+    <p class="lab" style="margin-top:26px" data-count aria-live="polite"></p>
   </div>
 </section>`;
 }
@@ -128,45 +178,42 @@ function expertiseSection() {
 function experienceSection() {
   return `
 <hr class="rule">
-<section class="section" id="experience" aria-labelledby="experience-title">
+<section class="sec" id="experience" aria-labelledby="xp-title">
   <div class="wrap">
-    <div class="section-head">
-      <h2 id="experience-title" class="reveal">Experience that connects the dots<span class="dot">.</span></h2>
-    </div>
-    <div class="xp-layout">
-      <div class="timeline">
+    <div class="sec-head"><h2 id="xp-title" class="reveal">Where I've led</h2></div>
+    <div class="two">
+      <div>
         ${experience
           .map(
             (x) => `
         <article class="xp reveal">
           <div>
-            <h3 class="xp-company">${esc(x.company)}${x.current ? '<span class="xp-now">Now</span>' : ''}</h3>
+            <h3 class="xp-co">${esc(x.company)}${x.current ? '<span class="now">Now</span>' : ''}${x.team ? `<span class="xp-team">${esc(x.team)}</span>` : ''}</h3>
             <p class="xp-role">${esc(x.role)}</p>
           </div>
-          <p class="xp-dates">${esc(x.start)} – ${esc(x.end)}</p>
-          <p class="xp-summary">${esc(x.summary)}</p>
-          <ul class="xp-points">${x.points.map((pt) => `<li>${esc(pt)}</li>`).join('')}</ul>
+          <p class="xp-d">${esc(x.start)} – ${esc(x.end)}</p>
+          <p class="xp-sum">${esc(x.summary)}</p>
+          <ul class="xp-pts">${x.points.map((p) => `<li>${esc(p)}</li>`).join('')}</ul>
         </article>`
           )
           .join('')}
       </div>
-      <aside class="beyond reveal">
-        <h3>Beyond the code<span class="dot" style="color:var(--blue)">.</span></h3>
-        ${beyond
-          .map(
-            (b) => `
-        <div class="beyond-item">
-          ${icon(b.icon)}
-          <div>
-            <h4>${esc(b.title)}</h4>
-            <p>${esc(b.body)}</p>
+      <aside>
+        <div class="panel reveal">
+          <h3>Selected product work</h3>
+          ${productWork
+            .map(
+              (p) => `<div class="pitem"><b>${esc(p.name)}</b>${p.period ? `<span class="m">${esc(p.period)}</span>` : ''}<p>${esc(p.role)}. ${esc(p.body)}</p></div>`
+            )
+            .join('')}
+          <div class="edu">
+            <h3 style="margin-bottom:12px">Education</h3>
+            <ul>${education.map((e) => `<li><b>${esc(e.title)}</b>${esc(e.org)}</li>`).join('')}</ul>
           </div>
-        </div>`
-          )
-          .join('')}
-        <div class="edu">
-          <h4>Education</h4>
-          <ul>${education.map((e) => `<li><b>${esc(e.title)}</b>${esc(e.org)}</li>`).join('')}</ul>
+        </div>
+        <div class="panel reveal" style="margin-top:22px">
+          <h3>Core strengths</h3>
+          ${strengths.map((s) => `<div class="pitem"><b>${esc(s.k)}</b><p>${esc(s.v)}</p></div>`).join('')}
         </div>
       </aside>
     </div>
@@ -177,30 +224,19 @@ function experienceSection() {
 function contactSection() {
   return `
 <hr class="rule">
-<section class="section contact" id="contact" aria-labelledby="contact-title">
+<section class="sec contact-wrap" id="contact">
   <div class="wrap">
-    <div class="contact-inner">
+    <div class="contact">
       <div class="reveal">
-        <h2 id="contact-title">Have something worth building<span class="dot">?</span></h2>
-        <p>Ideas, collaborations or just a good technical conversation — I'd love to hear from you.</p>
+        <h2>Looking for an engineering manager<em>?</em></h2>
+        <p>I'm open to engineering management roles, and happy to talk about leading a team, delivery, or a project that needs someone to own it.</p>
         <div class="socials">
-          ${site.socials
-            .map(
-              (s) =>
-                `<a class="social" href="${esc(s.href)}" rel="me noopener" target="_blank">${icon(s.icon)}${esc(s.label)}</a>`
-            )
-            .join('')}
+          ${site.socials.map((s) => `<a class="social" href="${esc(s.href)}" rel="me noopener" target="_blank">${icon(s.icon)}${esc(s.label)}</a>`).join('')}
         </div>
       </div>
-      <div class="contact-actions reveal">
-        <a class="btn btn-primary" href="mailto:${esc(site.email)}">${icon('mail')} Let's talk</a>
-        ${
-          // A sandboxed host (e.g. an artifact preview) blocks download links,
-          // so there the résumé opens in a new tab instead of saving.
-          process.env.PORTABLE === '1'
-            ? `<a class="btn btn-ghost" href="${esc(site.resume)}" target="_blank" rel="noopener">${icon('arrowUpRight')} Résumé</a>`
-            : `<a class="btn btn-ghost" href="${esc(site.resume)}" download>${icon('download')} Résumé</a>`
-        }
+      <div class="acts reveal">
+        <a class="btn p" href="mailto:${esc(site.email)}">${icon('mail')} Email me</a>
+        <a class="btn" href="${esc(site.resume)}" download>${icon('download')} Résumé</a>
       </div>
     </div>
   </div>
@@ -209,10 +245,10 @@ function contactSection() {
 
 export function homePage() {
   return layout({
-    title: `${site.name} — ${site.title} | SDKs, Mobile & Real-Time Experiences`,
+    title: `${site.name}, ${site.title} | Mobile, Web & XR`,
     description: site.description,
     canonical: site.url + '/',
     isHome: true,
-    body: [heroSection(), workSection(), expertiseSection(), experienceSection(), contactSection()].join('\n'),
+    body: [intro(), storiesSection(), experienceSection(), contactSection()].join('\n'),
   });
 }
